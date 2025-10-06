@@ -1,0 +1,69 @@
+{
+    "readings": [
+        {
+            "date_gregorian": "2025-10-06",
+            "date_coptic": "26 توت 1742",
+            "service_type": "liturgy",
+            "reading_type": "pauline",
+            "book": "رسالة بولس الرسول الأولى إلى كورنثوس",
+            "chapter_start": 1,
+            "verse_start": 1,
+            "chapter_end": 1,
+            "verse_end": 9,
+            "text_arabic": "بولس المدعو رسولاً ليسوع المسيح بمشيئة الله، وسوستانيس الأخ، إلى كنيسة الله التي في كورنثوس، المقدسين في المسيح يسوع، المدعوين قديسين مع جميع الذين يدعون باسم ربنا يسوع المسيح في كل مكان، ربهم وربنا. نعمة لكم وسلام من الله أبينا والرب يسوع المسيح.",
+            "text_english": "Paul, called to be an apostle of Jesus Christ through the will of God, and Sosthenes our brother, unto the church of God which is at Corinth, to them that are sanctified in Christ Jesus, called to be saints, with all that in every place call upon the name of Jesus Christ our Lord, both theirs and ours: Grace be unto you, and peace, from God our Father, and from the Lord Jesus Christ.",
+            "reference": "1كو 1: 1-9",
+            "season": "الزمن العادي",
+            "fast_type": ""
+        },
+        {
+            "date_gregorian": "2025-10-06", 
+            "date_coptic": "26 توت 1742",
+            "service_type": "liturgy",
+            "reading_type": "catholic",
+            "book": "رسالة بطرس الرسول الأولى",
+            "chapter_start": 1,
+            "verse_start": 1,
+            "chapter_end": 1,
+            "verse_end": 12,
+            "text_arabic": "بطرس رسول يسوع المسيح، إلى المتغربين من شتات بنتس وغلاطية وكبادوكية وأسيا وبيثينية، المختارين بمقتضى علم الله الآب السابق، في تقديس الروح للطاعة، ولرش دم يسوع المسيح. لتكثر لكم النعمة والسلام.",
+            "text_english": "Peter, an apostle of Jesus Christ, to the strangers scattered throughout Pontus, Galatia, Cappadocia, Asia, and Bithynia, Elect according to the foreknowledge of God the Father, through sanctification of the Spirit, unto obedience and sprinkling of the blood of Jesus Christ: Grace unto you, and peace, be multiplied.",
+            "reference": "1بط 1: 1-12",
+            "season": "الزمن العادي",
+            "fast_type": ""
+        }
+    ],
+    "synaxarium": [
+        {
+            "month_coptic": 1,
+            "day_coptic": 26,
+            "saint_name_ar": "الشهيد مار مينا العجائبي",
+            "saint_name_en": "Saint Mina the Wonderworker",
+            "saint_type": "martyr",
+            "story_ar": "وُلد القديس مينا في مصر من والدين مسيحيين تقيين. التحق بالجيش الروماني وأصبح ضابطاً. عندما بدأت اضطهادات دقلديانوس، ترك مينا الجيش واعتزل في البرية للصلاة والنسك. ثم عاد ليعترف بإيمانه أمام الوالي، فعُذب كثيراً ثم استُشهد. اشتهر بالمعجزات الكثيرة التي تتم بصلواته.",
+            "story_en": "Saint Mina was born in Egypt to devout Christian parents. He joined the Roman army and became an officer. When Diocletian's persecutions began, Mina left the army and retreated to the desert for prayer and asceticism. Then he returned to confess his faith before the governor, was tortured extensively, and then martyred. He became famous for the many miracles that occur through his prayers.",
+            "commemoration_ar": "تذكار استشهاد القديس مار مينا العجائبي",
+            "commemoration_en": "Commemoration of the martyrdom of Saint Mina the Wonderworker",
+            "image_url": "https://example.com/images/saint-mina.jpg"
+        }
+    ],
+    "feasts": [
+        {
+            "feast_name_ar": "عيد الصليب",
+            "feast_name_en": "Feast of the Cross",
+            "feast_type": "major",
+            "date_type": "coptic",
+            "month_coptic": 2,
+            "day_coptic": 17,
+            "date_gregorian": null,
+            "duration_days": 1,
+            "rank_level": 5,
+            "description_ar": "عيد الصليب المجيد الذي به تم خلاص العالم. نحتفل فيه بذكرى العثور على صليب ربنا يسوع المسيح على يد الملكة هيلانة والدة الإمبراطور قسطنطين.",
+            "description_en": "The Feast of the Holy Cross through which the salvation of the world was accomplished. We celebrate the finding of the Cross of our Lord Jesus Christ by Queen Helena, mother of Emperor Constantine.",
+            "special_readings": true,
+            "fast_breaking": true,
+            "icon_name": "✝️",
+            "color_theme": "gold"
+        }
+    ]
+}

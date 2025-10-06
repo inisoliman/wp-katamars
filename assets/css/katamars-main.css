@@ -1,0 +1,348 @@
+/*
+ * ملف CSS الرئيسي لإضافة Katamars
+ * يحتوي على جميع التنسيقات العامة
+ */
+
+:root {
+    --katamars-primary: #2c3e50;
+    --katamars-secondary: #3498db;
+    --katamars-success: #27ae60;
+    --katamars-warning: #f39c12;
+    --katamars-danger: #e74c3c;
+    --katamars-light: #ecf0f1;
+    --katamars-dark: #34495e;
+    --katamars-gold: #f1c40f;
+    --katamars-purple: #9b59b6;
+}
+
+/* إعدادات عامة */
+.katamars-container {
+    direction: rtl;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--katamars-primary);
+}
+
+.katamars-container * {
+    box-sizing: border-box;
+}
+
+/* العناوين */
+.katamars-title {
+    font-size: 2.5em;
+    color: var(--katamars-primary);
+    text-align: center;
+    margin: 0 0 30px 0;
+    position: relative;
+}
+
+.katamars-title::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--katamars-secondary), var(--katamars-gold));
+    border-radius: 2px;
+}
+
+.katamars-subtitle {
+    font-size: 1.3em;
+    color: var(--katamars-dark);
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: 300;
+}
+
+/* البطاقات */
+.katamars-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+    border: 1px solid var(--katamars-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.katamars-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.katamars-card h3 {
+    color: var(--katamars-primary);
+    border-bottom: 2px solid var(--katamars-secondary);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    font-size: 1.4em;
+}
+
+/* الأزرار */
+.katamars-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    min-width: 120px;
+}
+
+.katamars-btn-primary {
+    background: linear-gradient(135deg, var(--katamars-secondary), var(--katamars-primary));
+    color: white;
+}
+
+.katamars-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+}
+
+.katamars-btn-secondary {
+    background: var(--katamars-light);
+    color: var(--katamars-dark);
+}
+
+.katamars-btn-success {
+    background: linear-gradient(135deg, var(--katamars-success), #2ecc71);
+    color: white;
+}
+
+.katamars-btn-warning {
+    background: linear-gradient(135deg, var(--katamars-warning), #e67e22);
+    color: white;
+}
+
+.katamars-btn-danger {
+    background: linear-gradient(135deg, var(--katamars-danger), #c0392b);
+    color: white;
+}
+
+/* النماذج */
+.katamars-form {
+    background: var(--katamars-light);
+    padding: 30px;
+    border-radius: 15px;
+    margin: 25px 0;
+}
+
+.katamars-form-group {
+    margin-bottom: 25px;
+}
+
+.katamars-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--katamars-primary);
+    font-size: 14px;
+}
+
+.katamars-input,
+.katamars-textarea,
+.katamars-select {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    font-size: 16px;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.katamars-input:focus,
+.katamars-textarea:focus,
+.katamars-select:focus {
+    outline: none;
+    border-color: var(--katamars-secondary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.katamars-textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.8;
+}
+
+/* الجداول */
+.katamars-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+    margin: 25px 0;
+}
+
+.katamars-table th {
+    background: linear-gradient(135deg, var(--katamars-primary), var(--katamars-dark));
+    color: white;
+    padding: 20px;
+    text-align: right;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.katamars-table td {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--katamars-light);
+    transition: background-color 0.3s ease;
+}
+
+.katamars-table tbody tr:hover {
+    background: rgba(52, 152, 219, 0.05);
+}
+
+.katamars-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* التنبيهات */
+.katamars-alert {
+    padding: 20px 25px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border-right: 5px solid;
+    font-weight: 500;
+}
+
+.katamars-alert-success {
+    background: rgba(39, 174, 96, 0.1);
+    color: var(--katamars-success);
+    border-color: var(--katamars-success);
+}
+
+.katamars-alert-warning {
+    background: rgba(243, 156, 18, 0.1);
+    color: var(--katamars-warning);
+    border-color: var(--katamars-warning);
+}
+
+.katamars-alert-danger {
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--katamars-danger);
+    border-color: var(--katamars-danger);
+}
+
+.katamars-alert-info {
+    background: rgba(52, 152, 219, 0.1);
+    color: var(--katamars-secondary);
+    border-color: var(--katamars-secondary);
+}
+
+/* الشبكة */
+.katamars-grid {
+    display: grid;
+    gap: 25px;
+    margin: 25px 0;
+}
+
+.katamars-grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.katamars-grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.katamars-grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+/* التحميل */
+.katamars-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    font-size: 18px;
+    color: var(--katamars-secondary);
+}
+
+.katamars-spinner {
+    border: 4px solid var(--katamars-light);
+    border-top: 4px solid var(--katamars-secondary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: katamars-spin 1s linear infinite;
+    margin-left: 15px;
+}
+
+@keyframes katamars-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* الاستجابة للشاشات الصغيرة */
+@media (max-width: 768px) {
+    .katamars-title {
+        font-size: 2em;
+    }
+    
+    .katamars-card {
+        padding: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .katamars-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        min-width: 100px;
+    }
+    
+    .katamars-grid {
+        gap: 15px;
+    }
+    
+    .katamars-grid-2,
+    .katamars-grid-3,
+    .katamars-grid-4 {
+        grid-template-columns: 1fr;
+    }
+    
+    .katamars-table th,
+    .katamars-table td {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+}
+
+/* الطباعة */
+@media print {
+    .katamars-btn,
+    .katamars-form {
+        display: none;
+    }
+    
+    .katamars-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        break-inside: avoid;
+    }
+    
+    .katamars-table {
+        box-shadow: none;
+    }
+}
+
+/* الألوان المخصصة للمواسم */
+.katamars-season-lent {
+    border-color: var(--katamars-purple) !important;
+}
+
+.katamars-season-easter {
+    border-color: var(--katamars-gold) !important;
+}
+
+.katamars-season-advent {
+    border-color: var(--katamars-primary) !important;
+}
+
+.katamars-season-christmas {
+    border-color: var(--katamars-gold) !important;
+}
+
+.katamars-season-ordinary {
+    border-color: var(--katamars-success) !important;
+}

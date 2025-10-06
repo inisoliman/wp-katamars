@@ -1,0 +1,41 @@
+{
+    "apiVersion": 2,
+    "name": "katamars/readings",
+    "title": "قراءات اليوم - Katamars",
+    "category": "widgets",
+    "icon": "book",
+    "description": "عرض قراءات اليوم من القطمارس القبطي",
+    "supports": {
+        "html": false,
+        "align": ["left", "center", "right", "wide", "full"],
+        "color": {
+            "background": true,
+            "text": true
+        },
+        "spacing": {
+            "margin": true,
+            "padding": true
+        }
+    },
+    "attributes": {
+        "service": {
+            "type": "string",
+            "default": "liturgy"
+        },
+        "language": {
+            "type": "string",
+            "default": "ar"
+        },
+        "showReferences": {
+            "type": "boolean",
+            "default": true
+        },
+        "showTypes": {
+            "type": "boolean",
+            "default": true
+        }
+    },
+    "editorScript": "file:./block.js",
+    "editorStyle": "file:./editor.css",
+    "style": "file:./style.css"
+}

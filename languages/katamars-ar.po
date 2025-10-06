@@ -1,0 +1,67 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Katamars\n"
+"POT-Creation-Date: 2025-10-06 03:00+0000\n"
+"PO-Revision-Date: 2025-10-06 03:00+0000\n"
+"Last-Translator: Ini Soliman\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#: katamars.php:15
+msgid "إضافة ووردبريس شاملة لعرض القراءات اليومية والسنكسار والتقويم القبطي الأرثوذكسي"
+msgstr ""
+
+#: admin/class-katamars-admin.php:45
+msgid "القطمارس القبطي"
+msgstr ""
+
+#: admin/class-katamars-admin.php:46
+msgid "القطمارس"
+msgstr ""
+
+#: admin/class-katamars-admin.php:54
+msgid "لوحة التحكم"
+msgstr ""
+
+#: admin/class-katamars-admin.php:63
+msgid "القراءات اليومية"
+msgstr ""
+
+#: admin/class-katamars-admin.php:64
+msgid "القراءات"
+msgstr ""
+
+#: admin/class-katamars-admin.php:72
+msgid "السنكسار"
+msgstr ""
+
+#: admin/class-katamars-admin.php:81
+msgid "الأعياد والمناسبات"
+msgstr ""
+
+#: admin/class-katamars-admin.php:82
+msgid "الأعياد"
+msgstr ""
+
+#: admin/class-katamars-admin.php:90
+msgid "الإعدادات"
+msgstr ""
+
+msgid "Today's Readings"
+msgstr "قراءات اليوم"
+
+msgid "Coptic Calendar"
+msgstr "التقويم القبطي"
+
+msgid "Synaxarium"
+msgstr "السنكسار"
+
+msgid "Upcoming Feasts"
+msgstr "الأعياد القادمة"
+
+msgid "Search in Readings"
+msgstr "البحث في القراءات"

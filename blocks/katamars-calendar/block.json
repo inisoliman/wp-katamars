@@ -1,0 +1,32 @@
+{
+    "apiVersion": 2,
+    "name": "katamars/calendar",
+    "title": "التقويم القبطي - Katamars",
+    "category": "widgets", 
+    "icon": "calendar-alt",
+    "description": "عرض التقويم القبطي والصوم الحالي",
+    "supports": {
+        "html": false,
+        "align": ["left", "center", "right"],
+        "color": {
+            "background": true,
+            "text": true
+        }
+    },
+    "attributes": {
+        "showFast": {
+            "type": "boolean",
+            "default": true
+        },
+        "showSeason": {
+            "type": "boolean", 
+            "default": true
+        },
+        "showCopticDate": {
+            "type": "boolean",
+            "default": true
+        }
+    },
+    "editorScript": "file:./block.js",
+    "style": "file:./style.css"
+}

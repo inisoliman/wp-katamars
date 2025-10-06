@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+    <defs>
+        <linearGradient id="calGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#4169E1"/>
+            <stop offset="100%" style="stop-color:#1E90FF"/>
+        </linearGradient>
+    </defs>
+    <rect x="6" y="12" width="52" height="46" rx="4" fill="url(#calGrad)" stroke="#0066CC" stroke-width="2"/>
+    <rect x="6" y="12" width="52" height="12" rx="4" fill="#0066CC"/>
+    <rect x="10" y="4" width="4" height="16" rx="2" fill="#666"/>
+    <rect x="50" y="4" width="4" height="16" rx="2" fill="#666"/>
+    <rect x="10" y="28" width="44" height="26" fill="rgba(255,255,255,0.9)" rx="2"/>
+    
+    <!-- أيام الأسبوع -->
+    <text x="16" y="40" font-family="Arial" font-size="8" fill="#333">الأحد</text>
+    <text x="30" y="40" font-family="Arial" font-size="8" fill="#333">الإثنين</text>
+    <text x="44" y="40" font-family="Arial" font-size="8" fill="#333">الثلاثاء</text>
+    
+    <!-- الأرقام -->
+    <circle cx="20" cy="48" r="3" fill="#FFD700"/>
+    <text x="20" y="52" font-family="Arial" font-size="10" fill="#333" text-anchor="middle">15</text>
+</svg>

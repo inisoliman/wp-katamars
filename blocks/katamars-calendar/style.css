@@ -1,0 +1,72 @@
+/* تنسيقات بلوك التقويم */
+.wp-block-katamars-calendar {
+    margin: 25px 0;
+    padding: 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+    direction: rtl;
+}
+
+.katamars-calendar-header {
+    margin-bottom: 25px;
+}
+
+.katamars-calendar-today {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.katamars-coptic-date {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin: 15px 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.katamars-gregorian-date {
+    font-size: 1.1em;
+    opacity: 0.9;
+    margin-bottom: 20px;
+}
+
+.katamars-fast-info {
+    background: rgba(255,255,255,0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin: 15px 0;
+    backdrop-filter: blur(10px);
+}
+
+.katamars-fast-name {
+    display: block;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.katamars-fast-days {
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.katamars-season-info {
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 0.95em;
+}
+
+@media (max-width: 768px) {
+    .wp-block-katamars-calendar {
+        padding: 20px;
+    }
+    
+    .katamars-coptic-date {
+        font-size: 1.5em;
+    }
+}

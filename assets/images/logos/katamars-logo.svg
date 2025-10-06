@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="80" viewBox="0 0 200 80">
+    <defs>
+        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#2C3E50"/>
+            <stop offset="50%" style="stop-color:#3498DB"/>
+            <stop offset="100%" style="stop-color:#2C3E50"/>
+        </linearGradient>
+        <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge> 
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+    
+    <!-- الخلفية -->
+    <rect width="200" height="80" rx="15" fill="url(#logoGrad)" opacity="0.1"/>
+    
+    <!-- الكتاب المفتوح -->
+    <path d="M40 20 L40 60 Q40 65 45 65 L95 65 Q100 65 100 60 L100 20 Q100 15 95 15 L45 15 Q40 15 40 20" 
+          fill="rgba(139,69,19,0.8)" stroke="#8B4513" stroke-width="2"/>
+    <path d="M100 20 L100 60 Q100 65 105 65 L155 65 Q160 65 160 60 L160 20 Q160 15 155 15 L105 15 Q100 15 100 20" 
+          fill="rgba(139,69,19,0.8)" stroke="#8B4513" stroke-width="2"/>
+    
+    <!-- الصفحات -->
+    <rect x="45" y="22" width="50" height="38" fill="rgba(255,255,255,0.9)" rx="2"/>
+    <rect x="105" y="22" width="50" height="38" fill="rgba(255,255,255,0.9)" rx="2"/>
+    
+    <!-- النصوص على الصفحات -->
+    <line x1="48" y1="28" x2="92" y2="28" stroke="#2C3E50" stroke-width="1"/>
+    <line x1="48" y1="32" x2="88" y2="32" stroke="#2C3E50" stroke-width="0.5"/>
+    <line x1="48" y1="36" x2="90" y2="36" stroke="#2C3E50" stroke-width="0.5"/>
+    <line x1="108" y1="28" x2="152" y2="28" stroke="#2C3E50" stroke-width="1"/>
+    <line x1="108" y1="32" x2="148" y2="32" stroke="#2C3E50" stroke-width="0.5"/>
+    <line x1="108" y1="36" x2="150" y2="36" stroke="#2C3E50" stroke-width="0.5"/>
+    
+    <!-- الصليب في المنتصف -->
+    <circle cx="100" cy="40" r="8" fill="rgba(255,215,0,0.8)" stroke="#FFD700"/>
+    <line x1="100" y1="34" x2="100" y2="46" stroke="#8B4513" stroke-width="2"/>
+    <line x1="94" y1="40" x2="106" y2="40" stroke="#8B4513" stroke-width="2"/>
+    
+    <!-- النص -->
+    <text x="100" y="75" font-family="Arial, sans-serif" font-size="12" font-weight="bold" 
+          text-anchor="middle" fill="url(#logoGrad)" filter="url(#glow)">
+        القطمارس القبطي
+    </text>
+</svg>

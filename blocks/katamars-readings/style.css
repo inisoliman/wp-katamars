@@ -1,0 +1,59 @@
+/* تنسيقات بلوك القراءات */
+.wp-block-katamars-readings {
+    margin: 25px 0;
+    padding: 30px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+    border-right: 5px solid #3498db;
+    direction: rtl;
+    font-family: Arial, sans-serif;
+}
+
+.wp-block-katamars-readings h2 {
+    color: #2c3e50;
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    text-align: center;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 15px;
+}
+
+.katamars-reading-item {
+    background: white;
+    margin: 20px 0;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-right: 4px solid #27ae60;
+}
+
+.katamars-reading-type {
+    color: #2980b9;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.katamars-reading-reference {
+    color: #7f8c8d;
+    font-size: 0.95em;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+.katamars-reading-text {
+    line-height: 1.8;
+    color: #2c3e50;
+    font-size: 1.05em;
+}
+
+@media (max-width: 768px) {
+    .wp-block-katamars-readings {
+        padding: 20px;
+    }
+    
+    .katamars-reading-item {
+        padding: 20px;
+    }
+}
