@@ -1,0 +1,52 @@
+{
+    "name": "inisoliman/wp-katamars",
+    "description": "إضافة ووردبريس شاملة لعرض القراءات اليومية والسنكسار والتقويم القبطي",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "version": "2.0.0",
+    "authors": [
+        {
+            "name": "Ini Soliman",
+            "email": "one4vc@gmail.com",
+            "homepage": "https://github.com/inisoliman"
+        }
+    ],
+    "keywords": [
+        "wordpress",
+        "plugin",
+        "coptic",
+        "katamars",
+        "orthodox",
+        "readings",
+        "synaxarium",
+        "calendar",
+        "قبطي",
+        "قطمارس",
+        "سنكسار"
+    ],
+    "homepage": "https://github.com/inisoliman/wp-katamars",
+    "support": {
+        "issues": "https://github.com/inisoliman/wp-katamars/issues",
+        "source": "https://github.com/inisoliman/wp-katamars"
+    },
+    "require": {
+        "php": ">=7.2",
+        "composer/installers": "~1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0",
+        "wp-coding-standards/wpcs": "^2.0"
+    },
+    "scripts": {
+        "test": "phpunit",
+        "phpcs": "phpcs --standard=WordPress .",
+        "phpcbf": "phpcbf --standard=WordPress ."
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "extra": {
+        "installer-name": "wp-katamars"
+    }
+}
