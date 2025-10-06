@@ -69,6 +69,15 @@ class Katamars_Admin {
 
         add_submenu_page(
             $this->plugin_name,
+            __('استيراد البيانات', 'katamars'),
+            __('استيراد البيانات', 'katamars'),
+            'manage_options',
+            $this->plugin_name . '-import',
+            [$this, 'display_import_page']
+        );
+
+        add_submenu_page(
+            $this->plugin_name,
             __('القراءات اليومية', 'katamars'),
             __('القراءات', 'katamars'),
             'manage_options',
@@ -112,6 +121,13 @@ class Katamars_Admin {
     }
 
     /**
+     * عرض صفحة استيراد البيانات
+     */
+    public function display_import_page() {
+        include_once KATAMARS_PLUGIN_DIR . 'admin/views/admin-import.php';
+    }
+
+    /**
      * عرض صفحة القراءات
      */
     public function display_readings_page() {
@@ -147,5 +163,129 @@ class Katamars_Admin {
             $this->plugin_name,
             $this->plugin_name . '_settings'
         );
+    }
+
+    /**
+     * AJAX: الحصول على إحصائيات البيانات
+     */
+    public function ajax_get_stats() {
+        check_ajax_referer('katamars_admin_nonce', 'nonce');
+        
+        global $wpdb;
+        
+        $stats = [
+            'readings' => $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}katamars_readings"),
+            'synaxarium' => $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}katamars_synaxarium"),
+            'feasts' => $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}katamars_feasts"),
+            'saints' => $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}katamars_saints")
+        ];
+        
+        wp_send_json_success($stats);
+    }
+
+    /**
+     * AJAX: حفظ الإعدادات
+     */
+    public function ajax_save_settings() {
+        check_ajax_referer('katamars_admin_nonce', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('عدم وجود صلاحية');
+        }
+        
+        // حفظ الإعدادات
+        $settings = [];
+        
+        if (isset($_POST['katamars_settings'])) {
+            $settings = $_POST['katamars_settings'];
+            update_option('katamars_settings', $settings);
+        }
+        
+        wp_send_json_success('تم حفظ الإعدادات');
+    }
+
+    /**
+     * AJAX: تحديث القراءات
+     */
+    public function ajax_update_readings() {
+        check_ajax_referer('katamars_admin_nonce', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('عدم وجود صلاحية');
+        }
+        
+        // تحديث القراءات من مصدر خارجي أو API
+        // هذه وظيفة مستقبلية
+        
+        wp_send_json_success('تم تحديث القراءات');
+    }
+
+    /**
+     * AJAX: استيراد البيانات
+     */
+    public function ajax_import_data() {
+        check_ajax_referer('katamars_admin_nonce', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('عدم وجود صلاحية');
+        }
+        
+        require_once KATAMARS_PLUGIN_DIR . 'includes/class-katamars-importer.php';
+        
+        // التحقق من وجود ملف مرفوع
+        if (!isset($_FILES['import_file']) || $_FILES['import_file']['error'] !== UPLOAD_ERR_OK) {
+            wp_send_json_error('يرجى اختيار ملف صحيح');
+        }
+        
+        $uploaded_file = $_FILES['import_file']['tmp_name'];
+        $result = Katamars_Importer::import_old_database($uploaded_file);
+        
+        if (is_wp_error($result)) {
+            wp_send_json_error($result->get_error_message());
+        }
+        
+        wp_send_json_success($result);
+    }
+
+    /**
+     * AJAX: تصدير البيانات
+     */
+    public function ajax_export_data() {
+        check_ajax_referer('katamars_admin_nonce', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_die('عدم وجود صلاحية');
+        }
+        
+        require_once KATAMARS_PLUGIN_DIR . 'includes/class-katamars-importer.php';
+        
+        $backup_file = Katamars_Importer::create_backup();
+        
+        if ($backup_file && file_exists($backup_file)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/sql');
+            header('Content-Disposition: attachment; filename="katamars_export_' . date('Y-m-d_H-i-s') . '.sql"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($backup_file));
+            
+            readfile($backup_file);
+            unlink($backup_file); // حذف الملف المؤقت
+            exit;
+        } else {
+            wp_die('خطأ في إنشاء ملف الرزمة');
+        }
+    }
+
+    /**
+     * تسجيل AJAX actions
+     */
+    public function register_ajax_actions() {
+        add_action('wp_ajax_katamars_get_stats', [$this, 'ajax_get_stats']);
+        add_action('wp_ajax_katamars_save_settings', [$this, 'ajax_save_settings']);
+        add_action('wp_ajax_katamars_update_readings', [$this, 'ajax_update_readings']);
+        add_action('wp_ajax_katamars_import_data', [$this, 'ajax_import_data']);
+        add_action('wp_ajax_katamars_export_data', [$this, 'ajax_export_data']);
     }
 }
