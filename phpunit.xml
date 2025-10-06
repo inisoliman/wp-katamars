@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    bootstrap="tests/bootstrap.php"
+    backupGlobals="false"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    processIsolation="false"
+    stopOnFailure="false"
+    verbose="true">
+
+    <testsuites>
+        <testsuite name="Katamars Test Suite">
+            <directory>./tests/</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./includes/</directory>
+            <directory suffix=".php">./admin/</directory>
+            <directory suffix=".php">./public/</directory>
+            <file>./katamars.php</file>
+            <exclude>
+                <directory>./tests/</directory>
+                <directory>./vendor/</directory>
+                <directory>./node_modules/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-html" target="coverage" charset="UTF-8" yui="true" highlight="true"/>
+    </logging>
+</phpunit>
