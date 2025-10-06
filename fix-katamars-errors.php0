@@ -1,0 +1,454 @@
+<?php
+/**
+ * إصلاح أخطاء إضافة Katamars
+ */
+
+// إيجاد المسار الصحيح لـ wp-load.php
+$wp_load_path = dirname(dirname(dirname(dirname(__FILE__)))) . '/wp-load.php';
+
+if (!file_exists($wp_load_path)) {
+    // محاولة مسار بديل
+    $wp_load_path = $_SERVER['DOCUMENT_ROOT'] . '/bible/wp-load.php';
+}
+
+if (!file_exists($wp_load_path)) {
+    die('خطأ: لا يمكن إيجاد ملف wp-load.php<br>المسار المتوقع: ' . $wp_load_path);
+}
+
+require_once($wp_load_path);
+
+if (!current_user_can('manage_options')) {
+    die('غير مصرح لك بالوصول');
+}
+
+echo '<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8">
+<style>
+body { font-family: Arial; background: #f5f5f5; padding: 20px; }
+.container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+pre { background: #2c3e50; color: #00ff41; padding: 20px; border-radius: 5px; overflow-x: auto; }
+.success { color: #27ae60; font-weight: bold; }
+.error { color: #e74c3c; font-weight: bold; }
+.btn { display: inline-block; padding: 10px 20px; background: #3498db; color: white; text-decoration: none; border-radius: 5px; margin-top: 20px; }
+</style>
+</head><body><div class="container">';
+
+echo '<h1>🔧 إصلاح أخطاء Katamars</h1>';
+echo '<pre>';
+
+$base_dir = WP_PLUGIN_DIR . '/wp-katamars-main/';
+$fixed = 0;
+
+// ==============================================================================
+// إصلاح class-katamars-feasts.php
+// ==============================================================================
+
+echo "📝 إصلاح ملف class-katamars-feasts.php...\n";
+
+$feasts_file = $base_dir . 'includes/class-katamars-feasts.php';
+
+$feasts_content = <<<'PHPCODE'
+<?php
+/**
+ * كلاس الأعياد والمناسبات
+ */
+
+class Katamars_Feasts {
+
+    /**
+     * الحصول على أعياد اليوم
+     */
+    public static function get_todays_feasts($language = 'ar') {
+        $date = current_time('Y-m-d');
+        $coptic_date = Katamars_Coptic_Calendar::gregorian_to_coptic($date);
+        
+        global $wpdb;
+        $table = $wpdb->prefix . 'katamars_feasts';
+        
+        $results = $wpdb->get_results($wpdb->prepare(
+            "SELECT * FROM {$table}
+             WHERE (date_gregorian = %s)
+             OR (month_coptic = %d AND day_coptic = %d)
+             ORDER BY rank_level DESC, feast_type",
+            $date,
+            $coptic_date['month'],
+            $coptic_date['day']
+        ), ARRAY_A);
+        
+        return self::process_feasts($results, $language);
+    }
+
+    /**
+     * الحصول على الأعياد القادمة
+     */
+    public static function get_upcoming_feasts($limit = 5, $language = 'ar') {
+        global $wpdb;
+        $table = $wpdb->prefix . 'katamars_feasts';
+        $today = current_time('Y-m-d');
+        
+        $results = $wpdb->get_results($wpdb->prepare(
+            "SELECT * FROM {$table} WHERE date_gregorian >= %s ORDER BY date_gregorian ASC LIMIT %d",
+            $today,
+            $limit
+        ), ARRAY_A);
+        
+        return self::process_feasts($results, $language);
+    }
+
+    /**
+     * معالجة الأعياد
+     */
+    private static function process_feasts($results, $language = 'ar') {
+        $processed = array();
+        
+        if (empty($results)) {
+            return $processed;
+        }
+        
+        foreach ($results as $feast) {
+            $name = ($language === 'en' && !empty($feast['feast_name_en'])) 
+                ? $feast['feast_name_en'] 
+                : $feast['feast_name_ar'];
+                
+            $description = ($language === 'en' && !empty($feast['description_en'])) 
+                ? $feast['description_en'] 
+                : (!empty($feast['description_ar']) ? $feast['description_ar'] : '');
+            
+            $processed[] = array(
+                'id' => $feast['id'],
+                'name' => $name,
+                'type' => $feast['feast_type'],
+                'type_name' => self::get_feast_type_name($feast['feast_type'], $language),
+                'date' => $feast['date_gregorian'],
+                'rank' => $feast['rank_level'],
+                'description' => $description,
+                'icon' => isset($feast['icon_name']) ? $feast['icon_name'] : '',
+                'color' => isset($feast['color_theme']) ? $feast['color_theme'] : 'gold',
+                'fast_breaking' => !empty($feast['fast_breaking'])
+            );
+        }
+        
+        return $processed;
+    }
+
+    /**
+     * أسماء أنواع الأعياد
+     */
+    private static function get_feast_type_name($type, $language = 'ar') {
+        $types = array(
+            'ar' => array(
+                'major' => 'عيد سيدي كبير',
+                'minor' => 'عيد سيدي صغير',
+                'lord' => 'عيد رباني',
+                'virgin' => 'عيد السيدة العذراء',
+                'angel' => 'عيد الملائكة',
+                'apostle' => 'عيد رسولي',
+                'saint' => 'عيد قديس',
+                'commemoration' => 'تذكار'
+            ),
+            'en' => array(
+                'major' => 'Major Feast',
+                'minor' => 'Minor Feast',
+                'lord' => 'Lord Feast',
+                'virgin' => 'Virgin Mary Feast',
+                'angel' => 'Angelic Feast',
+                'apostle' => 'Apostolic Feast',
+                'saint' => 'Saint Feast',
+                'commemoration' => 'Commemoration'
+            )
+        );
+        
+        return isset($types[$language][$type]) ? $types[$language][$type] : $type;
+    }
+
+    /**
+     * تنسيق العيد للعرض
+     */
+    public static function format_feast_html($feast, $options = array()) {
+        $defaults = array(
+            'show_date' => true,
+            'show_icon' => true,
+            'css_class' => 'katamars-feast'
+        );
+        
+        $options = array_merge($defaults, $options);
+        
+        $html = '<div class="' . esc_attr($options['css_class']) . '" data-type="' . esc_attr($feast['type']) . '" style="border-color: ' . esc_attr($feast['color']) . '">';
+        
+        if ($options['show_icon'] && !empty($feast['icon'])) {
+            $html .= '<span class="feast-icon">' . esc_html($feast['icon']) . '</span>';
+        }
+        
+        $html .= '<h3 class="feast-name">' . esc_html($feast['name']) . '</h3>';
+        $html .= '<p class="feast-type"><em>' . esc_html($feast['type_name']) . '</em></p>';
+        
+        if ($options['show_date'] && !empty($feast['date'])) {
+            $html .= '<p class="feast-date">' . esc_html(date('j F Y', strtotime($feast['date']))) . '</p>';
+        }
+        
+        if (!empty($feast['description'])) {
+            $html .= '<div class="feast-description">' . wp_kses_post(nl2br($feast['description'])) . '</div>';
+        }
+        
+        $html .= '</div>';
+        
+        return $html;
+    }
+}
+PHPCODE;
+
+if (file_put_contents($feasts_file, $feasts_content)) {
+    echo "<span class='success'>✅ تم إصلاح: includes/class-katamars-feasts.php</span>\n";
+    $fixed++;
+} else {
+    echo "<span class='error'>❌ فشل إصلاح: includes/class-katamars-feasts.php</span>\n";
+}
+
+// ==============================================================================
+// إصلاح class-katamars-database.php
+// ==============================================================================
+
+echo "\n📝 إصلاح ملف class-katamars-database.php...\n";
+
+$database_file = $base_dir . 'includes/class-katamars-database.php';
+
+$database_content = <<<'PHPCODE'
+<?php
+/**
+ * كلاس إدارة قاعدة البيانات
+ */
+
+class Katamars_Database {
+
+    /**
+     * إنشاء الجداول
+     */
+    public static function create_tables() {
+        global $wpdb;
+
+        $charset_collate = $wpdb->get_charset_collate();
+        $success = true;
+
+        // جدول القراءات
+        $table_readings = $wpdb->prefix . 'katamars_readings';
+        $sql = "CREATE TABLE IF NOT EXISTS {$table_readings} (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            date_coptic varchar(10) NOT NULL DEFAULT '',
+            date_gregorian date NOT NULL,
+            service_type varchar(20) NOT NULL DEFAULT '',
+            reading_type varchar(50) NOT NULL DEFAULT '',
+            book varchar(100) NOT NULL DEFAULT '',
+            chapter_start int NOT NULL DEFAULT 0,
+            verse_start int NOT NULL DEFAULT 0,
+            chapter_end int NOT NULL DEFAULT 0,
+            verse_end int NOT NULL DEFAULT 0,
+            text_arabic longtext NOT NULL,
+            text_english longtext,
+            reference varchar(200) NOT NULL DEFAULT '',
+            season varchar(100) DEFAULT '',
+            fast_type varchar(50) DEFAULT '',
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY date_gregorian (date_gregorian),
+            KEY service_type (service_type),
+            KEY date_coptic (date_coptic)
+        ) {$charset_collate}";
+        
+        $result = $wpdb->query($sql);
+        if ($result === false) $success = false;
+
+        // جدول السنكسار
+        $table_synaxarium = $wpdb->prefix . 'katamars_synaxarium';
+        $sql = "CREATE TABLE IF NOT EXISTS {$table_synaxarium} (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            month_coptic tinyint(2) NOT NULL DEFAULT 0,
+            day_coptic tinyint(2) NOT NULL DEFAULT 0,
+            saint_name_ar varchar(255) NOT NULL DEFAULT '',
+            saint_name_en varchar(255) DEFAULT NULL,
+            saint_type varchar(50) NOT NULL DEFAULT '',
+            story_ar longtext NOT NULL,
+            story_en longtext,
+            commemoration_ar text,
+            commemoration_en text,
+            image_url varchar(500) DEFAULT NULL,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY month_coptic (month_coptic),
+            KEY day_coptic (day_coptic),
+            KEY saint_type (saint_type)
+        ) {$charset_collate}";
+        
+        $result = $wpdb->query($sql);
+        if ($result === false) $success = false;
+
+        // جدول الأعياد
+        $table_feasts = $wpdb->prefix . 'katamars_feasts';
+        $sql = "CREATE TABLE IF NOT EXISTS {$table_feasts} (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            feast_name_ar varchar(255) NOT NULL DEFAULT '',
+            feast_name_en varchar(255) DEFAULT NULL,
+            feast_type varchar(50) NOT NULL DEFAULT '',
+            date_type varchar(20) NOT NULL DEFAULT '',
+            month_coptic tinyint(2) DEFAULT NULL,
+            day_coptic tinyint(2) DEFAULT NULL,
+            date_gregorian date DEFAULT NULL,
+            duration_days tinyint(3) DEFAULT 1,
+            rank_level tinyint(1) DEFAULT 1,
+            description_ar text,
+            description_en text,
+            special_readings tinyint(1) DEFAULT 0,
+            fast_breaking tinyint(1) DEFAULT 0,
+            icon_name varchar(100) DEFAULT NULL,
+            color_theme varchar(20) DEFAULT 'gold',
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY feast_type (feast_type),
+            KEY date_gregorian (date_gregorian),
+            KEY rank_level (rank_level)
+        ) {$charset_collate}";
+        
+        $result = $wpdb->query($sql);
+        if ($result === false) $success = false;
+
+        // جدول القديسين
+        $table_saints = $wpdb->prefix . 'katamars_saints';
+        $sql = "CREATE TABLE IF NOT EXISTS {$table_saints} (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            saint_name_ar varchar(255) NOT NULL DEFAULT '',
+            saint_name_en varchar(255) DEFAULT NULL,
+            saint_name_coptic varchar(255) DEFAULT NULL,
+            saint_title_ar varchar(255) DEFAULT NULL,
+            saint_title_en varchar(255) DEFAULT NULL,
+            birth_date varchar(50) DEFAULT NULL,
+            death_date varchar(50) DEFAULT NULL,
+            feast_day varchar(20) DEFAULT NULL,
+            biography_ar longtext,
+            biography_en longtext,
+            miracles_ar text,
+            miracles_en text,
+            relics_location varchar(255) DEFAULT NULL,
+            patron_of text,
+            image_url varchar(500) DEFAULT NULL,
+            icon_url varchar(500) DEFAULT NULL,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY feast_day (feast_day)
+        ) {$charset_collate}";
+        
+        $result = $wpdb->query($sql);
+        if ($result === false) $success = false;
+
+        if ($success) {
+            update_option('katamars_db_version', '1.0');
+        }
+        
+        return $success;
+    }
+
+    /**
+     * الحصول على القراءات اليومية
+     */
+    public static function get_daily_readings($date = null, $service = 'liturgy') {
+        global $wpdb;
+        
+        if (!$date) {
+            $date = current_time('Y-m-d');
+        }
+
+        $table = $wpdb->prefix . 'katamars_readings';
+        
+        $results = $wpdb->get_results($wpdb->prepare(
+            "SELECT * FROM {$table} WHERE date_gregorian = %s AND service_type = %s ORDER BY reading_type",
+            $date,
+            $service
+        ));
+
+        return $results ? $results : array();
+    }
+
+    /**
+     * الحصول على السنكسار اليومي
+     */
+    public static function get_daily_synaxarium($coptic_month, $coptic_day) {
+        global $wpdb;
+        
+        $table = $wpdb->prefix . 'katamars_synaxarium';
+        
+        $results = $wpdb->get_results($wpdb->prepare(
+            "SELECT * FROM {$table} WHERE month_coptic = %d AND day_coptic = %d ORDER BY saint_type, saint_name_ar",
+            $coptic_month,
+            $coptic_day
+        ));
+
+        return $results ? $results : array();
+    }
+}
+PHPCODE;
+
+if (file_put_contents($database_file, $database_content)) {
+    echo "<span class='success'>✅ تم إصلاح: includes/class-katamars-database.php</span>\n";
+    $fixed++;
+} else {
+    echo "<span class='error'>❌ فشل إصلاح: includes/class-katamars-database.php</span>\n";
+}
+
+// ==============================================================================
+// إعادة إنشاء الجداول
+// ==============================================================================
+
+echo "\n🔄 إعادة إنشاء جداول قاعدة البيانات...\n";
+
+// تحميل الكلاس المحدث
+require_once($database_file);
+
+// حذف الجداول القديمة
+$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}katamars_readings");
+$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}katamars_synaxarium");
+$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}katamars_feasts");
+$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}katamars_saints");
+
+echo "✅ تم حذف الجداول القديمة\n";
+
+// إنشاء الجداول الجديدة
+if (class_exists('Katamars_Database')) {
+    if (Katamars_Database::create_tables()) {
+        echo "<span class='success'>✅ تم إنشاء الجداول بنجاح</span>\n";
+        $fixed++;
+    } else {
+        echo "<span class='error'>❌ فشل إنشاء الجداول</span>\n";
+    }
+}
+
+// ==============================================================================
+// التحقق من الجداول
+// ==============================================================================
+
+echo "\n📊 التحقق من الجداول المنشأة...\n";
+
+$tables = array(
+    'katamars_readings',
+    'katamars_synaxarium', 
+    'katamars_feasts',
+    'katamars_saints'
+);
+
+foreach ($tables as $table) {
+    $full_name = $wpdb->prefix . $table;
+    $exists = $wpdb->get_var("SHOW TABLES LIKE '{$full_name}'");
+    
+    if ($exists) {
+        echo "<span class='success'>✅ {$table}</span>\n";
+    } else {
+        echo "<span class='error'>❌ {$table}</span>\n";
+    }
+}
+
+echo "\n====================================\n";
+echo "<span class='success'>✅ تم إصلاح {$fixed} مشكلة بنجاح!</span>\n";
+echo "====================================\n";
+
+echo '</pre>';
+echo '<a href="/bible/wp-admin/plugins.php" class="btn">🔌 العودة إلى صفحة الإضافات</a>';
+echo '<p style="color:#e74c3c;font-weight:bold;margin-top:20px;">⚠️ لا تنسى حذف هذا الملف بعد الانتهاء!</p>';
+echo '</div></body></html>';
+?>

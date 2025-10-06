@@ -15,9 +15,8 @@ class Katamars_Feasts {
         global $wpdb;
         $table = $wpdb->prefix . 'katamars_feasts';
         
-        // البحث بالتاريخ الميلادي والقبطي
         $results = $wpdb->get_results($wpdb->prepare(
-            "SELECT * FROM $table 
+            "SELECT * FROM {$table}
              WHERE (date_gregorian = %s)
              OR (month_coptic = %d AND day_coptic = %d)
              ORDER BY rank_level DESC, feast_type",
@@ -38,10 +37,7 @@ class Katamars_Feasts {
         $today = current_time('Y-m-d');
         
         $results = $wpdb->get_results($wpdb->prepare(
-            "SELECT * FROM $table 
-             WHERE date_gregorian >= %s 
-             ORDER BY date_gregorian ASC 
-             LIMIT %d",
+            "SELECT * FROM {$table} WHERE date_gregorian >= %s ORDER BY date_gregorian ASC LIMIT %d",
             $today,
             $limit
         ), ARRAY_A);
@@ -53,18 +49,22 @@ class Katamars_Feasts {
      * معالجة الأعياد
      */
     private static function process_feasts($results, $language = 'ar') {
-        $processed = [];
+        $processed = array();
+        
+        if (empty($results)) {
+            return $processed;
+        }
         
         foreach ($results as $feast) {
-            $name = $language === 'en' && !empty($feast['feast_name_en']) 
+            $name = ($language === 'en' && !empty($feast['feast_name_en'])) 
                 ? $feast['feast_name_en'] 
                 : $feast['feast_name_ar'];
                 
-            $description = $language === 'en' && !empty($feast['description_en']) 
+            $description = ($language === 'en' && !empty($feast['description_en'])) 
                 ? $feast['description_en'] 
-                : $feast['description_ar'];
+                : (!empty($feast['description_ar']) ? $feast['description_ar'] : '');
             
-            $processed[] = [
+            $processed[] = array(
                 'id' => $feast['id'],
                 'name' => $name,
                 'type' => $feast['feast_type'],
@@ -72,10 +72,10 @@ class Katamars_Feasts {
                 'date' => $feast['date_gregorian'],
                 'rank' => $feast['rank_level'],
                 'description' => $description,
-                'icon' => $feast['icon_name'],
-                'color' => $feast['color_theme'],
-                'fast_breaking' => (bool)$feast['fast_breaking']
-            ];
+                'icon' => isset($feast['icon_name']) ? $feast['icon_name'] : '',
+                'color' => isset($feast['color_theme']) ? $feast['color_theme'] : 'gold',
+                'fast_breaking' => !empty($feast['fast_breaking'])
+            );
         }
         
         return $processed;
@@ -85,47 +85,45 @@ class Katamars_Feasts {
      * أسماء أنواع الأعياد
      */
     private static function get_feast_type_name($type, $language = 'ar') {
-        $types = [
-            'ar' => [
+        $types = array(
+            'ar' => array(
                 'major' => 'عيد سيدي كبير',
                 'minor' => 'عيد سيدي صغير',
-                'lord' => 'عيد ربّاني',
+                'lord' => 'عيد رباني',
                 'virgin' => 'عيد السيدة العذراء',
                 'angel' => 'عيد الملائكة',
                 'apostle' => 'عيد رسولي',
                 'saint' => 'عيد قديس',
                 'commemoration' => 'تذكار'
-            ],
-            'en' => [
+            ),
+            'en' => array(
                 'major' => 'Major Feast',
                 'minor' => 'Minor Feast',
-                'lord' => 'Lord's Feast',
+                'lord' => 'Lord Feast',
                 'virgin' => 'Virgin Mary Feast',
                 'angel' => 'Angelic Feast',
                 'apostle' => 'Apostolic Feast',
-                'saint' => 'Saint's Feast',
+                'saint' => 'Saint Feast',
                 'commemoration' => 'Commemoration'
-            ]
-        ];
+            )
+        );
         
-        return $types[$language][$type] ?? $type;
+        return isset($types[$language][$type]) ? $types[$language][$type] : $type;
     }
 
     /**
      * تنسيق العيد للعرض
      */
-    public static function format_feast_html($feast, $options = []) {
-        $defaults = [
+    public static function format_feast_html($feast, $options = array()) {
+        $defaults = array(
             'show_date' => true,
             'show_icon' => true,
             'css_class' => 'katamars-feast'
-        ];
+        );
         
-        $options = wp_parse_args($options, $defaults);
+        $options = array_merge($defaults, $options);
         
-        $html = '<div class="' . esc_attr($options['css_class']) . '" 
-                      data-type="' . esc_attr($feast['type']) . '"
-                      style="border-color: ' . esc_attr($feast['color']) . '">';
+        $html = '<div class="' . esc_attr($options['css_class']) . '" data-type="' . esc_attr($feast['type']) . '" style="border-color: ' . esc_attr($feast['color']) . '">';
         
         if ($options['show_icon'] && !empty($feast['icon'])) {
             $html .= '<span class="feast-icon">' . esc_html($feast['icon']) . '</span>';
@@ -134,7 +132,7 @@ class Katamars_Feasts {
         $html .= '<h3 class="feast-name">' . esc_html($feast['name']) . '</h3>';
         $html .= '<p class="feast-type"><em>' . esc_html($feast['type_name']) . '</em></p>';
         
-        if ($options['show_date']) {
+        if ($options['show_date'] && !empty($feast['date'])) {
             $html .= '<p class="feast-date">' . esc_html(date('j F Y', strtotime($feast['date']))) . '</p>';
         }
         
