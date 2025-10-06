@@ -1,0 +1,237 @@
+/* تنسيقات Katamars - الواجهة العامة */
+
+/* الحاوية الرئيسية */
+.katamars-readings-container,
+.katamars-calendar,
+.katamars-synaxarium,
+.katamars-feasts {
+    font-family: Arial, sans-serif;
+    direction: rtl;
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+}
+
+/* العناوين */
+.katamars-title,
+.katamars-readings-container h2,
+.katamars-calendar h2,
+.katamars-synaxarium h2,
+.katamars-feasts h2 {
+    color: #2c3e50;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* القراءة الواحدة */
+.katamars-reading {
+    background: #f8f9fa;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border-right: 5px solid #3498db;
+}
+
+.reading-type {
+    color: #2980b9;
+    font-size: 1.3em;
+    margin-bottom: 10px;
+}
+
+.reading-reference {
+    color: #7f8c8d;
+    font-size: 0.95em;
+    margin-bottom: 15px;
+}
+
+.reading-text {
+    line-height: 1.8;
+    color: #2c3e50;
+    font-size: 1.05em;
+}
+
+/* التقويم */
+.katamars-calendar {
+    text-align: center;
+}
+
+.calendar-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.calendar-header h3 {
+    font-size: 2em;
+    margin: 0 0 10px 0;
+}
+
+.coptic-date {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.calendar-fast,
+.calendar-season {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    color: #856404;
+}
+
+/* السنكسار */
+.synax-item {
+    background: #f8f9fa;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border-right: 5px solid #27ae60;
+}
+
+.synax-image {
+    max-width: 150px;
+    height: auto;
+    float: right;
+    margin: 0 0 15px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.synax-name {
+    color: #27ae60;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.synax-type {
+    color: #7f8c8d;
+    font-style: italic;
+    margin-bottom: 15px;
+}
+
+.synax-story {
+    line-height: 1.8;
+    color: #2c3e50;
+    clear: both;
+}
+
+/* الأعياد */
+.katamars-feast {
+    background: #fff9e6;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border-right: 5px solid #f39c12;
+}
+
+.feast-icon {
+    font-size: 2em;
+    float: left;
+}
+
+.feast-name {
+    color: #e67e22;
+    font-size: 1.3em;
+    margin-bottom: 5px;
+}
+
+.feast-type {
+    color: #7f8c8d;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.feast-date {
+    color: #95a5a6;
+    font-size: 0.9em;
+}
+
+.feast-description {
+    margin-top: 15px;
+    line-height: 1.6;
+    color: #2c3e50;
+}
+
+/* البحث */
+.katamars-search-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.katamars-search-input {
+    flex: 1;
+    padding: 12px 20px;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+.katamars-search-input:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.katamars-search-btn {
+    padding: 12px 30px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.katamars-search-btn:hover {
+    background: #2980b9;
+}
+
+/* استجابة للموبايل */
+@media (max-width: 768px) {
+    .katamars-readings-container,
+    .katamars-calendar,
+    .katamars-synaxarium,
+    .katamars-feasts {
+        padding: 15px;
+    }
+    
+    .calendar-header h3 {
+        font-size: 1.5em;
+    }
+    
+    .synax-image {
+        float: none;
+        display: block;
+        margin: 0 auto 15px;
+    }
+    
+    .reading-text {
+        font-size: 1em;
+    }
+}
+
+/* الطباعة */
+@media print {
+    .katamars-search-form,
+    .katamars-search-btn {
+        display: none;
+    }
+    
+    .katamars-readings-container,
+    .katamars-synaxarium {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}
