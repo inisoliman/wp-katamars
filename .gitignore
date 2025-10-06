@@ -1,0 +1,42 @@
+# WordPress
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+
+# الإضافة
+import-old-database.php
+data/old_database.sql
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+error_log
+debug.log
+
+# Node modules (if using build tools)
+node_modules/
+npm-debug.log*
+
+# Build files
+build/
+dist/
+
+# Development files
+*.dev.js
+*.dev.css
+
+# Composer
+/vendor/
+
+# Environment files
+.env
+.env.local
